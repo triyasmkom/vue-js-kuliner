@@ -559,3 +559,326 @@ Tambahkan css di ```main.css```:
 ![image](./image-readme/home29.png)
 
 ![image](./image-readme/home30.png)
+
+
+
+## Membuat Server Tiruan menggunakan Json-server
+
+Dokumentasi: https://github.com/typicode/json-server
+
+Pertama kita install terlebih dahulu:
+
+```bash
+npm install -g json-server
+```
+
+Buat file db.json untuk database backend kita:
+
+```json
+{
+"best_products":[],
+"products":[],
+"keranjang":[],
+"pesanan":[]
+}
+
+```
+
+Jalankan server tiruan kita:
+
+```bash
+json-server -p 4000 --watch ./kuliner-be/db.json
+```
+
+![image](./image-readme/api1.png)
+
+
+## Memnbuat Card Product
+
+Pertama kita rapikan terlebih dahulu tampilannya antara mobile dan desktop di file ```Hero.vue``` :
+
+```vue
+<template>
+  <div class="hero">
+    <!-- Desktop -->
+    <div class="d-none d-md-block">
+      <div class="row mt-4">
+        <div class="col-md-6">
+          <div class="d-flex h-100">
+            <div class="justify-content-center align-self-center">
+              <h2><strong>Delicious Food Menu, </strong><br> in Your Gadged</h2>
+              <p>Ayo segera pilih dan pesan makanan faovorite Anda</p>
+              <button class="btn btn-lg btn-success">Pesan  <b-icon-arrow-right></b-icon-arrow-right></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="col">
+          <img src="./../assets/images/hero.png" alt="" width="100%">
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile -->
+    <div class="d-sm-block d-md-none">
+      <div class="row mt-4">
+        <div class="col-md-6 mb-3">
+          <img src="./../assets/images/hero.png" alt="" width="100%">
+        </div>
+        <div class="col-md-6">
+          <div class="d-flex h-100">
+            <div class="justify-content-center align-self-center">
+              <h2><strong>Delicious Food Menu, </strong><br> in Your Gadged</h2>
+              <p>Ayo segera pilih dan pesan makanan faovorite Anda</p>
+              <button class="btn btn-lg btn-success">Pesan  <b-icon-arrow-right></b-icon-arrow-right></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  
+</template>
+
+<script>
+export default {
+    // eslint-disable-next-line vue/multi-word-component-names
+    name: 'Hero'
+}
+</script>
+
+<style>
+
+</style>
+
+```
+
+![image](./image-readme/api2.png)
+
+![image](./image-readme/api3.png)
+
+
+
+Membuat tampilan best foods, buat component file ```CardProduct.vue``` :
+
+![image](./image-readme/api4.png)
+
+
+```vue
+<template>
+  <h2>Card Product {{ product.nama }}</h2>
+</template>
+
+<script>
+export default {
+    name: "CardProduct",
+    props:['product']
+}
+</script>
+
+<style>
+
+</style>
+```
+
+Ubah di file ```HomeView.vue ```menjadi seperti ini:
+
+![image](./image-readme/api5.png)
+
+![image](./image-readme/api6.png)
+
+
+```vue
+<template>
+  <div class="home">
+    <Navbar />
+    <div class="container">
+      <Hero/>
+      <!-- menampilkan best foods -->
+      <div class="row mt-4">
+        <div class="col">
+          <h2>Best <strong>Foods</strong></h2>
+        </div>
+        <div class="col">
+          <router-link to="/foods" class="btn btn-success float-right"><b-icon-eye></b-icon-eye> Lihat semua</router-link>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-4 mt-4" v-for="product in products" :key="product.id">
+          <CardProduct :product="product"/>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</template>
+
+<script>
+// @ is an alias to /src
+import Navbar from '@/components/Navbar.vue'
+import Hero from '@/components/Hero.vue'
+import CardProduct from '@/components/CardProducts.vue'
+import axios from 'axios'
+
+export default {
+  name: 'HomeView',
+  // component yang ingin ditampilkan
+  components: {
+    Navbar, Hero, CardProduct
+  },
+  // untuk menampung data
+  data(){
+    return{
+      products:[]
+    }
+  },
+  // method untuk set data
+  methods:{
+    setProduct(data){
+      this.products = data
+    }
+  },
+  // menjalankan program yang ada di dalam mounted ketika halaman ini ditampilkan
+  mounted(){
+    axios.get("http://localhost:3000/products")
+    // handle success
+    .then((response)=>this.setProduct(response.data))
+    // handle error
+    .catch((error)=>console.log(error))
+  }
+}
+</script>
+
+```
+
+
+
+![image](./image-readme/api7.png)
+
+Sekarang kita gunakan bootstrap untuk membuat card:
+
+```vue
+<div class="card">
+  <div class="card-body">
+    This is some text within a card body.
+  </div>
+</div>
+
+```
+
+![image](./image-readme/api8.png)
+
+Kita cari gambar sesuai dengan response dari API dan simpan di folder public:
+
+![image](./image-readme/ap10.png)
+
+Kemudian kita copy paste code dari bootstrap ke file CardProduct.vue menjadi seperti ini:
+
+```vue
+<template>
+  <!-- <h2>Card Product {{ product.nama }}</h2> -->
+  <div class="card" style="width: 18rem">
+    <img :src="'./assets/images/'+product.gambar" class="card-img-top" alt="..." />
+    <div class="card-body">
+      <p class="card-text">
+        Card Product {{ product.nama }}
+      </p>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "CardProduct",
+  props: ["product"],
+};
+</script>
+
+<style>
+</style>
+
+```
+
+Membuat file untuk footer:
+
+![image](./image-readme/api10.png)
+
+```vue
+<template>
+  <footer class="mt-5 mb-5">
+    <hr />
+    <div class="container">
+      <div class="row">
+        <div class="col text-center">
+            2023 © Triyas HS
+        </div>
+      </div>
+    </div>
+  </footer>
+</template>
+
+<script>
+export default {
+    name: "Footer_"
+};
+</script>
+
+<style>
+</style>
+
+```
+
+Kemudian kita panggil di App.vue :
+
+```vue
+<template>
+  <div id="app">
+    <nav>
+    </nav>
+    <router-view/>
+    <Footer_ />
+  </div>
+</template>
+
+<script>
+  import Footer_ from '@/components/Footer.vue'
+  export default{
+    components:{Footer_}
+  }
+</script>
+
+```
+
+dan main.css menjadi seperti ini:
+
+```css
+.router-link-exact-active{
+font-weight: bold;
+}
+
+#app{
+font-family: 'Montserrat', sans-serif;
+font-family: 'Open Sans', sans-serif;
+}
+
+.btn-success{
+background-color: #4EB883;
+}
+
+.badge-success{
+background-color: #4EB883;
+}
+
+.card-product{
+border-radius: 15px;
+}
+
+.card-img-top{
+border-top-right-radius: 15px;
+border-top-left-radius: 15px;
+}
+
+```

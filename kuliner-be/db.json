@@ -1,0 +1,50 @@
+{
+    "best_products":[
+        {
+            "id":1,
+            "kode":"K01",
+            "nama":"Sate Ayam",
+            "harga": 16000,
+            "is_ready": true,
+            "gambar": "sate-ayam.jpg"
+        }
+    ],
+    "products":[
+        {
+            "id":1,
+            "kode":"K01",
+            "nama":"Sate Ayam",
+            "harga": 16000,
+            "is_ready": true,
+            "gambar": "sate-ayam.jpg"
+        },
+        {
+            "id":2,
+            "kode":"K02",
+            "nama":"Mie Ayam",
+            "harga": 12000,
+            "is_ready": true,
+            "gambar": "mie-ayam.jpg"
+        },
+        {
+            "id":3,
+            "kode":"K03",
+            "nama":"Bakso Ayam",
+            "harga": 13000,
+            "is_ready": true,
+            "gambar": "bakso-ayam.jpg"
+        },
+        {
+            "id":4,
+            "kode":"K04",
+            "nama":"Bakso Urat",
+            "harga": 19000,
+            "is_ready": true,
+            "gambar": "bakso-urat.jpg"
+        }
+
+        
+    ],
+    "keranjang":[],
+    "pesanan":[]
+}
